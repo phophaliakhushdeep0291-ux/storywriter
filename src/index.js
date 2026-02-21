@@ -7,7 +7,7 @@ import connectPostgres from "./config/db.postgres.js"
 import logger from "./utils/logger.js"
 import { app } from "./app.js"; //THIS LINE WAS MISSING
 
-connectMongoDB()
+Promise.all([connectMongoDB(),connectPostgres()])
     .then(()=>{
         app.listen(process.env.PORT|| 8000,()=>{
             logger.info(`Server is running at port : ${process.env.PORT||8000}`)
