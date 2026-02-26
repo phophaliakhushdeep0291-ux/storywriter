@@ -4,10 +4,11 @@ import {IdeaSession} from "../models/mongo/ideaSession.model.js"
 import logger from "../utils/logger.js";
 import { ApiError } from "../utils/ApiError.js"
 
-const groq= new Groq({
-    apiKey: process.env.GROQ_API_KEY,
-});
+
 const ideaAgent=async(sessionId, userMessage)=>{
+    const groq= new Groq({
+        apiKey: process.env.GROQ_API_KEY,
+    });
     try {
         const session=await IdeaSession.findById(sessionId);
         if(!session)throw new ApiError(404,"Session not found");

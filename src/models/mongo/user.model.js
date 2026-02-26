@@ -1,6 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import crypto from "crypto"
 
 const userSchema = new Schema(
     {
@@ -21,6 +22,22 @@ const userSchema = new Schema(
         },
         avatar: {
             type: String,
+        },
+        isEmailVerified: {
+            type: Boolean,
+            default: false,
+        },
+        emailVerificationToken: {
+            type: String,
+        },
+        emailVerificationExpiry: {
+            type: Date,
+        },
+        forgotPasswordToken:{
+            type:String
+        },
+        forgotPasswordExpiry:{
+            type:Date
         },
         refreshToken: {
             type: String,
@@ -58,5 +75,23 @@ userSchema.methods.generateRefreshToken = function () {
         { expiresIn: process.env.REFRESH_TOKEN_EXPIRY }
     );
 };
+userSchema.methods.generateEmailVerificationToken=function(){
+    const token=crypto.randomBytes(32).toString("hex")
+    this.emailVerificationToken=crypto
+        .createHash("sha256")
+        .update(token)
+        .digest("hex")
+    this.emailVerificationExpiry=Date.now()+24*60*60*1000
+    return token
+}
+userSchema.methods.generatePasswordResetToken=function(){
+    const token=crypto.randomBytes(32).toString("hex")
+    this.forgotPasswordToken=crypto
+        .createHash("sha256")
+        .update(token)
+        .digest("hex")
+    this.forgotPasswordExpiry=Date.now()+10*60*1000
+    return token
+}
 
 export const User = mongoose.model("User", userSchema);
