@@ -5,8 +5,11 @@ dotenv.config({
 import connectMongoDB from "./config/db.mongo.js"
 import connectPostgres from "./config/db.postgres.js"
 import logger from "./utils/logger.js"
-import { app } from "./app.js"; //THIS LINE WAS MISSING
+import { app } from "./app.js";
+import { startCleanupJobs } from "./utils/cleanupJobs.js"
 
+startCleanupJobs()
+logger.info("Cleanup jobs started")
 Promise.all([connectMongoDB(),connectPostgres()])
     .then(()=>{
         app.listen(process.env.PORT|| 8000,()=>{
