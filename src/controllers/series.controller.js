@@ -11,7 +11,7 @@ const createSession=asyncHandler(async(req,res)=>{
        throw new ApiError(400,"There is no new Idea");
     }
     const ideaSession=await IdeaSession.create({
-        // owner:req.user._id,
+        owner:req.user._id,
         raw_idea,
     })
     return res.status(201).json(

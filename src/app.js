@@ -3,6 +3,8 @@ import cors from "cors"
 import cookieParser from "cookie-parser"
 import seriesRouter from"./routes/series.routes.js"
 import userRouter from "./routes/user.routes.js"
+import { errorMiddleware } from "./middlewares/error.middleware.js"
+
 
 const app=express()
 
@@ -16,4 +18,5 @@ app.use(express.static("public"))
 app.use(cookieParser())
 app.use("/api/v1/idea",seriesRouter)
 app.use("/api/v1/users", userRouter)
+app.use(errorMiddleware)
 export{app}

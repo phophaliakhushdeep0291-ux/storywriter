@@ -27,7 +27,7 @@ const ideaSessionSchema = new Schema(
         owner: {
             type: Schema.Types.ObjectId,
             ref: "User",
-            required: false,
+            required: true,
         },
         // Your original raw idea
         raw_idea: {
